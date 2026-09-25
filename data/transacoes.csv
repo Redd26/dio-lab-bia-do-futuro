@@ -1,11 +1,13 @@
-data,descricao,categoria,valor,tipo
-2025-10-01,Salário,receita,5000.00,entrada
-2025-10-02,Aluguel,moradia,1200.00,saida
-2025-10-03,Supermercado,alimentacao,450.00,saida
-2025-10-05,Netflix,lazer,55.90,saida
-2025-10-07,Farmácia,saude,89.00,saida
-2025-10-10,Restaurante,alimentacao,120.00,saida
-2025-10-12,Uber,transporte,45.00,saida
-2025-10-15,Conta de Luz,moradia,180.00,saida
-2025-10-20,Academia,saude,99.00,saida
-2025-10-25,Combustível,transporte,250.00,saida
+data,descricao,categoria,valor,tipo,id_vinculo
+2025-10-01,Salário Empresa,receita,5000.00,entrada,N/A
+2025-10-02,Aluguel e Condomínio,moradia,1200.00,saida,N/A
+2025-10-03,Supermercado Central,alimentacao,450.00,saida,N/A
+2025-10-05,Assinatura Netflix,lazer,55.90,saida,N/A
+2025-10-07,Farmácia Pague Menos,saude,89.00,saida,N/A
+2025-10-10,Débito Empréstimo Parcela 01,divida,1000.00,saida,DIV-001
+2025-10-10,Restaurante Almoço,alimentacao,120.00,saida,N/A
+2025-10-12,Corrida Uber Urbano,transporte,45.00,saida,N/A
+2025-10-15,Conta de Luz Equatorial,moradia,180.00,saida,N/A
+2025-10-20,Mensalidade Academia,saude,99.00,saida,N/A
+2025-10-22,Parc 01 Financiamento Notebook,divida,500.00,saida,DIV-002
+2025-10-25,Combustível Posto BR,transporte,250.00,saida,N/A
