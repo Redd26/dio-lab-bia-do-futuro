@@ -66,6 +66,7 @@ flowchart TD
 | Interface | [Streamlit](https://streamlit.io/) |
 | LLM | Ollama (local) |
 | Base de Conhecimento | JSON/CSV mockados na pasta `data` |
+| Análise Preditiva e Cálculo de Riscos | Script Python |
 | Validação | Guardrails / Regras de Prompt |
 
 ---
