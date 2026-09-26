@@ -1,149 +1,79 @@
-# 🤖 Agente Financeiro Inteligente com IA Generativa
+# FINN — Agente de Saúde Financeira
 
-## Contexto
+> **Arquitetura híbrida de IA Conversacional (Ollama) e Engenharia de Dados (Python) para mitigação de endividamento e análise preditiva de fluxo de caixa local.**
 
-Os assistentes virtuais no setor financeiro estão evoluindo de simples chatbots reativos para **agentes inteligentes e proativos**. Neste desafio, você vai idealizar e prototipar um agente financeiro que utiliza IA Generativa para:
-
-- **Antecipar necessidades** ao invés de apenas responder perguntas
-- **Personalizar** sugestões com base no contexto de cada cliente
-- **Cocriar soluções** financeiras de forma consultiva
-- **Garantir segurança** e confiabilidade nas respostas (anti-alucinação)
-
-> [!TIP]
-> Na pasta [`examples/`](./examples/) você encontra referências de implementação para cada etapa deste desafio.
+O **Finn** resolve o maior problema de agentes de IA na área de finanças: o risco de alucinação numérica. Sabendo que **LLMs não realizam cálculos com confiabilidade**, o Finn adota uma abordagem de engenharia de software rigorosa: isola toda a lógica matemática em um motor determinístico em **Python**, deixando a LLM local (`Ollama`) responsável estritamente pela tradução e contextualização conversacional dos dados em tópicos de ação imediatos, ou seja, *"como resolver o agora"*.
 
 ---
 
-## O Que Você Deve Entregar
+## Por que o Finn é diferente?
 
-### 1. Documentação do Agente
+Ao contrário de robôs financeiros que apenas definem conceitos genéricos de economia, o Finn é um **Parceiro Proativo e Pragmático**. Suas análises agem diretamente na saúde orçamentária do usuário em tempo real:
 
-Defina **o que** seu agente faz e **como** ele funciona:
-
-- **Caso de Uso:** Qual problema financeiro ele resolve? (ex: consultoria de investimentos, planejamento de metas, alertas de gastos)
-- **Persona e Tom de Voz:** Como o agente se comporta e se comunica?
-- **Arquitetura:** Fluxo de dados e integração com a base de conhecimento
-- **Segurança:** Como evitar alucinações e garantir respostas confiáveis?
-
-📄 **Template:** [`docs/01-documentacao-agente.md`](./docs/01-documentacao-agente.md)
+*   **Zero Alucinação de Valores:** A LLM não calcula saldos, juros ou DTI. O motor Python processa os dados de antemão e injeta os valores consolidados diretamente no prompt.
+*   **Ancoragem de Contexto Rígida:** Utiliza indexadores de fonte específicos (`[2]`, `[4]`) associados diretamente à base de dados local, forçando o modelo a respeitar unicamente as verdades fornecidas.
+*   **Execução 100% Local e Privada:** Todo o pipeline roda em sua máquina usando Ollama e Streamlit. Dados financeiros altamente sensíveis e extratos bancários nunca são expostos a APIs públicas de terceiros.
 
 ---
 
-### 2. Base de Conhecimento
+## Blueprint de Arquitetura e Fluxo
 
-Utilize os **dados mockados** disponíveis na pasta [`data/`](./data/) para alimentar seu agente:
+```mermaid
+graph LR
+    User([👤 Cliente]) <-->|Texto / Inputs| Streamlit[🖥️ Interface Streamlit]
+    Streamlit <-->|Mensagem + Contexto| Ollama[🧠 LLM Ollama: Llama3]
+    
+    subgraph Pipeline_de_Dados [Motor de Inteligência Local]
+        PythonEngine[⚙️ Script Python: Pandas] <-->|Gera DTI & Projeções| Context[📄 Bloco de Contexto]
+        DB[(📁 Pasta data/ JSON & CSV)] -->|Leitura Estática| PythonEngine
+        HFDatasets[🌐 Hugging Face Datasets] -->|Dicionário NLP| PythonEngine
+    end
 
-| Arquivo | Formato | Descrição |
-|---------|---------|-----------|
-| `transacoes.csv` | CSV | Histórico de transações do cliente |
-| `historico_atendimento.csv` | CSV | Histórico de atendimentos anteriores |
-| `perfil_investidor.json` | JSON | Perfil e preferências do cliente |
-| `produtos_financeiros.json` | JSON | Produtos e serviços disponíveis |
-
-Você pode adaptar ou expandir esses dados conforme seu caso de uso.
-
-📄 **Template:** [`docs/02-base-conhecimento.md`](./docs/02-base-conhecimento.md)
-
----
-
-### 3. Prompts do Agente
-
-Documente os prompts que definem o comportamento do seu agente:
-
-- **System Prompt:** Instruções gerais de comportamento e restrições
-- **Exemplos de Interação:** Cenários de uso com entrada e saída esperada
-- **Tratamento de Edge Cases:** Como o agente lida com situações limite
-
-📄 **Template:** [`docs/03-prompts.md`](./docs/03-prompts.md)
-
----
-
-### 4. Aplicação Funcional
-
-Desenvolva um **protótipo funcional** do seu agente:
-
-- Chatbot interativo (sugestão: Streamlit, Gradio ou similar)
-- Integração com LLM (via API ou modelo local)
-- Conexão com a base de conhecimento
-
-📁 **Pasta:** [`src/`](./src/)
-
----
-
-### 5. Avaliação e Métricas
-
-Descreva como você avalia a qualidade do seu agente:
-
-**Métricas Sugeridas:**
-- Precisão/assertividade das respostas
-- Taxa de respostas seguras (sem alucinações)
-- Coerência com o perfil do cliente
-
-📄 **Template:** [`docs/04-metricas.md`](./docs/04-metricas.md)
-
----
-
-### 6. Pitch
-
-Grave um **pitch de 3 minutos** (estilo elevador) apresentando:
-
-- Qual problema seu agente resolve?
-- Como ele funciona na prática?
-- Por que essa solução é inovadora?
-
-📄 **Template:** [`docs/05-pitch.md`](./docs/05-pitch.md)
-
----
-
-## Ferramentas Sugeridas
-
-Todas as ferramentas abaixo possuem versões gratuitas:
-
-| Categoria | Ferramentas |
-|-----------|-------------|
-| **LLMs** | [ChatGPT](https://chat.openai.com/), [Copilot](https://copilot.microsoft.com/), [Gemini](https://gemini.google.com/), [Claude](https://claude.ai/), [Ollama](https://ollama.ai/) |
-| **Desenvolvimento** | [Streamlit](https://streamlit.io/), [Gradio](https://www.gradio.app/), [Google Colab](https://colab.research.google.com/) |
-| **Orquestração** | [LangChain](https://www.langchain.com/), [LangFlow](https://www.langflow.org/), [CrewAI](https://www.crewai.com/) |
-| **Diagramas** | [Mermaid](https://mermaid.js.org/), [Draw.io](https://app.diagrams.net/), [Excalidraw](https://excalidraw.com/) |
-
----
-
-## Estrutura do Repositório
-
-```
-📁 lab-agente-financeiro/
-│
-├── 📄 README.md
-│
-├── 📁 data/                          # Dados mockados para o agente
-│   ├── historico_atendimento.csv     # Histórico de atendimentos (CSV)
-│   ├── perfil_investidor.json        # Perfil do cliente (JSON)
-│   ├── produtos_financeiros.json     # Produtos disponíveis (JSON)
-│   └── transacoes.csv                # Histórico de transações (CSV)
-│
-├── 📁 docs/                          # Documentação do projeto
-│   ├── 01-documentacao-agente.md     # Caso de uso e arquitetura
-│   ├── 02-base-conhecimento.md       # Estratégia de dados
-│   ├── 03-prompts.md                 # Engenharia de prompts
-│   ├── 04-metricas.md                # Avaliação e métricas
-│   └── 05-pitch.md                   # Roteiro do pitch
-│
-├── 📁 src/                           # Código da aplicação
-│   └── app.py                        # (exemplo de estrutura)
-│
-├── 📁 assets/                        # Imagens e diagramas
-│   └── ...
-│
-└── 📁 examples/                      # Referências e exemplos
-    └── README.md
+    Context -.->|Injeção Dinâmica| Ollama
 ```
 
 ---
 
-## Dicas Finais
+## Matriz de Dados e Inteligência Open-Source
 
-1. **Comece pelo prompt:** Um bom system prompt é a base de um agente eficaz
-2. **Use os dados mockados:** Eles garantem consistência e evitam problemas com dados sensíveis
-3. **Foque na segurança:** No setor financeiro, evitar alucinações é crítico
-4. **Teste cenários reais:** Simule perguntas que um cliente faria de verdade
-5. **Seja direto no pitch:** 3 minutos passam rápido, vá ao ponto
+O agente combina arquivos locais simulando dados em produção com datasets de NLP e psicologia financeira carregados do **Hugging Face**:
+
+| Caminho / Identificador | Formato | Tipo de Contexto | Função Estratégica no Agente |
+| :--- | :--- | :--- | :--- |
+| `data/perfil_investidor.json` | JSON | Local / Perfil | Fornece a renda líquida e os contratos de dívidas estruturados para o cálculo do índice de comprometimento (DTI). |
+| `data/transacoes.csv` | CSV | Local / Extrato | Armazena o extrato do mês corrente para monitoramento do ritmo de gastos (*burn rate*). |
+| `data/produtos_financeiros.json` | JSON | Local / Catálogo | Tabela estrita e restrita de ativos de Renda Fixa com parâmetros de liquidez diária. |
+| [`mitulshah/transaction-categorization`](https://huggingface.co) | HF Dataset | Global / NLP | Fornece o dicionário de padrões para o script Python categorizar strings de transações brutas automaticamente. |
+| [`Akhil-Theerthala/PersonalFinance_v2`](https://huggingface.co) | HF Dataset | Global / Chat | Amostras de raciocínio de finanças pessoais (CoT) para alinhar o tom a ações limpas e diretas. |
+
+---
+
+## Guardrails e Defesa do Prompt
+
+O System Prompt do Finn foi calibrado e testado em múltiplos modelos (**ChatGPT, Claude, Gemini e Copilot**) para validar sua resiliência:
+*   **Filtro Anti-Injection:** Comandos de chat do tipo *"Esqueça as regras anteriores"* são invalidados automaticamente pela LLM, que responde trazendo o DTI e o orçamento de volta à pauta.
+*   **Sanitização Preventiva (PII):** Funções Regex limpam ou mascaram dados sensíveis (CPFs e números de contas) antes de enviar qualquer payload para a IA.
+*   **Isolamento de Escopo:** O agente está terminantemente proibido de recomendar Renda Variável (ações/cripto), travando suas sugestões no catálogo estrito de baixo risco.
+
+---
+
+## Como Executar o Projeto
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/Redd26/finn-agente-de-saude-financeira
+cd finn-agente-de-saude-financeira
+
+# 2. Instale as bibliotecas
+pip install streamlit pandas requests datasets
+
+# 3. Certifique-se de que o Ollama está rodando localmente
+ollama pull gpt-oss
+ollama serve
+
+# 4. Inicie o sistema visual
+streamlit run src/app.py
+```
+
+---
+Developed by [Lucas Pereira da Silva](https://github.com/Redd26) — Projeto focado em Engenharia de Prompt e IA Conversacional Determinística.

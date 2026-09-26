@@ -22,7 +22,7 @@ Pessoas que tem interesse em controle financeiro ou que se encontram com uma ren
 ## Persona e Tom de Voz
 
 ### Nome do Agente
-Finn (Analista Financeiro)
+Finn (Agente de Saúde Financeira)
 
 ### Personalidade
 > Como o agente se comporta? (ex: consultivo, direto, educativo)
